@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #refresh:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="refresh" , type="submit" , class="'btn">Refresh</button>
+    <span id="textCookies"></span>
+    <div id="allNews"></div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+        $('document').ready(function () {
+            giveMeNews()
+            $('#refresh').on('click', refreshNews);
+        });
+
+
+        giveMeNews = function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:7000/api/getNews",
+                dataType: 'json',
+                success: function (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        var newDiv = $('<div>')
+                        var linkNews = $('<a>')
+                        linkNews.attr("href", array[i]["link"])
+                        linkNews.text(array[i]["title"])
+                        newDiv.append(linkNews)
+                        $('#allNews').append(newDiv)
+                    }
+
+                },
+                error: function () {
+                    console.log("error");
+                },
+            });
+        };
+
+       
+        refreshNews = function () {
+            $('#allNews').empty();
+            giveMeNews();
+            $('#textCookies').text(document.cookie)
+            var date = new Date();
+            date.setTime(date.getTime());
+            document.cookie = date;
+        }
+
+
+    </script>
+</body>
+
+</html>
