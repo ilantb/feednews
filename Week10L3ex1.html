@@ -34,7 +34,10 @@
                 type: "GET",
                 url: "http://localhost:7000/api/getNews",
                 dataType: 'json',
-                success: function (array) {
+                success: function (result) {
+                    var array = result[0]
+                    var msg = result[1]
+                    $('#textCookies').text(msg)
                     for (var i = 0; i < array.length; i++) {
                         var newDiv = $('<div>')
                         var linkNews = $('<a>')
@@ -55,10 +58,6 @@
         refreshNews = function () {
             $('#allNews').empty();
             giveMeNews();
-            $('#textCookies').text(document.cookie)
-            var date = new Date();
-            date.setTime(date.getTime());
-            document.cookie = date;
         }
 
 
